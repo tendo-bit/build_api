@@ -15,7 +15,6 @@ app.listen(process.env.PORT || 3001, () => {
 });
 
 app.post('/v2/quote', async function (req, res) {
-
 	var options = {
 		hostname: "interface.gateway.uniswap.org",
 		path: "/v2/quote",
@@ -28,12 +27,10 @@ app.post('/v2/quote', async function (req, res) {
 
 	var str = '';
 	var hreq = https.request(options, function(hres) {
-		// hres.setEncoding('utf8');
 		hres.on('data', function (chunk) {
 			str += chunk;
 		});
 		hres.on('end', function () {
-			console.log(str)
 			res.set({ 'Content-Type': 'text/event-stream', 'access-control-allow-origin': '*' })
 			res.send(str)
 		});
@@ -46,4 +43,66 @@ app.post('/v2/quote', async function (req, res) {
 	// write data to request body
 	hreq.write(JSON.stringify(req.body));
 	hreq.end();
-})
+});
+
+app.post('/v1/amplitude-proxy', async function (req, res) {
+	var options = {
+		hostname: "interface.gateway.uniswap.org",
+		path: "/v1/amplitude-proxy",
+		method: 'POST',
+		headers: {
+			origin: 'https://app.uniswap.org',
+			referer: 'https://app.uniswap.org'
+		}
+	};
+
+	var str = '';
+	var hreq = https.request(options, function(hres) {
+		hres.on('data', function (chunk) {
+			str += chunk;
+		});
+		hres.on('end', function () {
+			res.set({ 'Content-Type': 'text/event-stream', 'access-control-allow-origin': '*' })
+			res.send(str)
+		});
+	});
+	
+	hreq.on('error', function(e) {
+		console.log('problem with request: ' + e.message);
+	});
+
+	// write data to request body
+	hreq.write(JSON.stringify(req.body));
+	hreq.end();
+});
+
+app.post('/v1/graphql', async function (req, res) {
+	var options = {
+		hostname: "interface.gateway.uniswap.org",
+		path: "/v1/graphql",
+		method: 'POST',
+		headers: {
+			origin: 'https://app.uniswap.org',
+			referer: 'https://app.uniswap.org'
+		}
+	};
+
+	var str = '';
+	var hreq = https.request(options, function(hres) {
+		hres.on('data', function (chunk) {
+			str += chunk;
+		});
+		hres.on('end', function () {
+			res.set({ 'Content-Type': 'text/event-stream', 'access-control-allow-origin': '*' })
+			res.send(str)
+		});
+	});
+	
+	hreq.on('error', function(e) {
+		console.log('problem with request: ' + e.message);
+	});
+
+	// write data to request body
+	hreq.write(JSON.stringify(req.body));
+	hreq.end();
+});
