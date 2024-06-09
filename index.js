@@ -9,14 +9,6 @@ const port = 3001;
 const app = express();
 const https = require('https')
 
-app.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
-
 app.use(express.json());
 app.listen(process.env.PORT || 3001, () => {
 	console.log(`App start on port ${port}`);
